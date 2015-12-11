@@ -1,6 +1,5 @@
 import SocketServer
 from parser import Parser
-import command
 
 class AlfaTCPHandler(SocketServer.BaseRequestHandler):
 
