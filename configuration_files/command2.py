@@ -40,8 +40,8 @@ rightpwd_in1_pin = 26
 rightpwd_in2_pin = 23
 GPIO.setup(rightpwd_in1_pin, GPIO.OUT)
 GPIO.setup(rightpwd_in2_pin, GPIO.OUT)
-motorpwm2 = GPIO.PWM(26,100)
-motorpwm4 = GPIO.PWM(23,100)
+motorpwm2 = GPIO.PWM(rightpwd_in1_pin,100)
+motorpwm4 = GPIO.PWM(rightpwd_in2_pin,100)
 motorpwm2.start(0)
 motorpwm2.ChangeDutyCycle(100)
 motorpwm4.start(0)
