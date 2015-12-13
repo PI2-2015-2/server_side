@@ -23,4 +23,4 @@ class Parser():
             # execute instruction
             instruction.run(parsed_json.keys()[i], parsed_json.values()[i])
             i += 1
-    #instruction.cleanGPIO()
+    instruction.clearPWM()

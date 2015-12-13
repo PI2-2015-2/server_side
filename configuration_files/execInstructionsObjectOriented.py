@@ -31,10 +31,15 @@ class ExecInstructions():
         GPIO.setup(self.rightPWM1_motor_pin, GPIO.OUT)
         GPIO.setup(self.rightPWM2_motor_pin, GPIO.OUT)
         # Create PWM instance (channel, frequency)
-        self.motorPWM_left1 = GPIO.PWM(self.leftPWM1_motor_pin, 50)
-        self.motorPWM_left2 = GPIO.PWM(self.leftPWM2_motor_pin, 50)
-        self.motorPWM_right1 = GPIO.PWM(self.rightPWM1_motor_pin,50)
-        self.motorPWM_right2 = GPIO.PWM(self.rightPWM2_motor_pin,50)
+        self.motorPWM_left1 = GPIO.PWM(self.leftPWM1_motor_pin, 100)
+        self.motorPWM_left2 = GPIO.PWM(self.leftPWM2_motor_pin, 100)
+        self.motorPWM_right1 = GPIO.PWM(self.rightPWM1_motor_pin,100)
+        self.motorPWM_right2 = GPIO.PWM(self.rightPWM2_motor_pin,100)
+        # Turn on the engines at duty cycle equals to 0
+        self.motorPWM_left1.start(0)
+        self.motorPWM_left2.start(0)
+        self.motorPWM_right1.start(0)
+        self.motorPWM_right2.start(0)
 
 
     def run(self, name, values):
@@ -52,13 +57,9 @@ class ExecInstructions():
     def move(self, duration, power, orientation):
         print "move"
         # Make it move
-        self.motorPWM_left1.start(0)
         self.motorPWM_left1.ChangeDutyCycle(power)
-        self.motorPWM_left2.start(0)
         self.motorPWM_left2.ChangeDutyCycle(power)
-        self.motorPWM_right1.start(0)
         self.motorPWM_right1.ChangeDutyCycle(power)
-        self.motorPWM_right2.start(0)
         self.motorPWM_right2.ChangeDutyCycle(power)
 
         if orientation == 0:
@@ -77,22 +78,13 @@ class ExecInstructions():
 
         # Sleep for 'duration' minutes
         time.sleep(duration)
-        # Stop
-        self.motorPWM_left1.stop()
-        self.motorPWM_left2.stop()
-        self.motorPWM_right1.stop()
-        self.motorPWM_right2.stop()
 
     def turn(self, degree, power):
         print "turn"
         # Make it turn
-        self.motorPWM_left1.start(0)
         self.motorPWM_left1.ChangeDutyCycle(power)
-        self.motorPWM_left2.start(0)
         self.motorPWM_left2.ChangeDutyCycle(power)
-        self.motorPWM_right1.start(0)
         self.motorPWM_right1.ChangeDutyCycle(power)
-        self.motorPWM_right2.start(0)
         self.motorPWM_right2.ChangeDutyCycle(power)
 
         if degree == 0:
@@ -111,19 +103,13 @@ class ExecInstructions():
 
         # Sleep for 'duration' minutes
         time.sleep(2)
-        # Stop
-        self.motorPWM_left1.stop()
-        self.motorPWM_left2.stop()
-        self.motorPWM_right1.stop()
-        self.motorPWM_right2.stop()
 
     def stop(self, duration):
         print "stop"
-        # Stop
-        self.motorPWM_left1.stop()
-        self.motorPWM_left2.stop()
-        self.motorPWM_right1.stop()
-        self.motorPWM_right2.stop()
+        self.motorPWM_left1.ChangeDutyCycle(0)
+        self.motorPWM_left2.ChangeDutyCycle(0)
+        self.motorPWM_right1.ChangeDutyCycle(0)
+        self.motorPWM_right2.ChangeDutyCycle(0)
         # Disable movimentation for 'duration' seconds
         GPIO.output(self.leftIN1_motor_pin, False)
         GPIO.output(self.leftIN2_motor_pin, False)
