@@ -20,9 +20,6 @@ class ExecInstructions():
         #GPIO number
         GPIO.setmode(GPIO.BCM)
 
-        # Disable warning from GPIO
-        GPIO.setwarnings(False)
-
         # Set the motor spinning pins as GPIO OUTPUT
         GPIO.setup(self.leftIN1_motor_pin, GPIO.OUT)
         GPIO.setup(self.leftIN2_motor_pin, GPIO.OUT)
@@ -34,10 +31,10 @@ class ExecInstructions():
         GPIO.setup(self.rightPWM1_motor_pin, GPIO.OUT)
         GPIO.setup(self.rightPWM2_motor_pin, GPIO.OUT)
         # Create PWM instance (channel, frequency)
-        self.motorPWM_left1 = GPIO.PWM(self.leftPWM1_motor_pin, 100)
-        self.motorPWM_left2 = GPIO.PWM(self.leftPWM2_motor_pin, 100)
-        self.motorPWM_right1 = GPIO.PWM(self.rightPWM1_motor_pin,100)
-        self.motorPWM_right2 = GPIO.PWM(self.rightPWM2_motor_pin,100)
+        self.motorPWM_left1 = GPIO.PWM(self.leftPWM1_motor_pin, 50)
+        self.motorPWM_left2 = GPIO.PWM(self.leftPWM2_motor_pin, 50)
+        self.motorPWM_right1 = GPIO.PWM(self.rightPWM1_motor_pin,50)
+        self.motorPWM_right2 = GPIO.PWM(self.rightPWM2_motor_pin,50)
 
 
     def run(self, name, values):
@@ -49,8 +46,11 @@ class ExecInstructions():
             self.turn(values.get('degree'), values.get('power'))
         elif name == "sensorDistance":
             print "sensorDistance"
+        else:
+            print "Instrucao nao mapeada"
 
     def move(self, duration, power, orientation):
+        print "move"
         # Make it move
         self.motorPWM_left1.start(0)
         self.motorPWM_left1.ChangeDutyCycle(power)
@@ -66,24 +66,25 @@ class ExecInstructions():
             GPIO.output(self.leftIN1_motor_pin, True)
             GPIO.output(self.leftIN2_motor_pin, False)
             GPIO.output(self.rightIN1_motor_pin, True)
-            GPIO.output(self.rightIN1_motor_pin, False)
+            GPIO.output(self.rightIN2_motor_pin, False)
 
         elif orientation == 1:
             # Move backward
             GPIO.output(self.leftIN1_motor_pin, False)
             GPIO.output(self.leftIN2_motor_pin, True)
             GPIO.output(self.rightIN1_motor_pin, False)
-            GPIO.output(self.rightIN1_motor_pin, True)
+            GPIO.output(self.rightIN2_motor_pin, True)
 
         # Sleep for 'duration' minutes
         time.sleep(duration)
         # Stop
-        motorPWM_left1.stop()
-        motorPWM_right1.stop()
-        motorPWM_left2.stop()
-        motorPWM_right2.stop()
+        self.motorPWM_left1.stop()
+        self.motorPWM_left2.stop()
+        self.motorPWM_right1.stop()
+        self.motorPWM_right2.stop()
 
     def turn(self, degree, power):
+        print "turn"
         # Make it turn
         self.motorPWM_left1.start(0)
         self.motorPWM_left1.ChangeDutyCycle(power)
@@ -99,28 +100,38 @@ class ExecInstructions():
             GPIO.output(self.leftIN1_motor_pin, True)
             GPIO.output(self.leftIN2_motor_pin, False)
             GPIO.output(self.rightIN1_motor_pin, False)
-            GPIO.output(self.rightIN1_motor_pin, True)
+            GPIO.output(self.rightIN2_motor_pin, True)
 
         elif degree == 1:
             # Move backward
             GPIO.output(self.leftIN1_motor_pin, False)
             GPIO.output(self.leftIN2_motor_pin, True)
             GPIO.output(self.rightIN1_motor_pin, True)
-            GPIO.output(self.rightIN1_motor_pin, False)
+            GPIO.output(self.rightIN2_motor_pin, False)
 
         # Sleep for 'duration' minutes
         time.sleep(2)
         # Stop
-        motorPWM_left1.stop()
-        motorPWM_right1.stop()
-        motorPWM_left2.stop()
-        motorPWM_right2.stop()
+        self.motorPWM_left1.stop()
+        self.motorPWM_left2.stop()
+        self.motorPWM_right1.stop()
+        self.motorPWM_right2.stop()
 
     def stop(self, duration):
+        print "stop"
+        # Stop
+        self.motorPWM_left1.stop()
+        self.motorPWM_left2.stop()
+        self.motorPWM_right1.stop()
+        self.motorPWM_right2.stop()
         # Disable movimentation for 'duration' seconds
         GPIO.output(self.leftIN1_motor_pin, False)
         GPIO.output(self.leftIN2_motor_pin, False)
         GPIO.output(self.rightIN1_motor_pin, False)
-        GPIO.output(self.rightIN1_motor_pin, False)
+        GPIO.output(self.rightIN2_motor_pin, False)
         # Sleep for 'duration' seconds
         time.sleep(duration)
+
+    def cleanGPIO(self):
+        print "GPIO cleanup"
+        GPIO.cleanup()
