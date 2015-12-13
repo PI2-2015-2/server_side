@@ -119,8 +119,8 @@ def cleanGPIO():
     # Clean GPIO pins
     GPIO.cleanup()
 
-def clearPWM():
-    print "Clear PWM"
+def cleanPWM():
+    print "Clean PWM"
     # Change duty cycle to 0
     motorPWM_left1.ChangeDutyCycle(0)
     motorPWM_left2.ChangeDutyCycle(0)
