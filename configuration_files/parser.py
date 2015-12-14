@@ -16,7 +16,7 @@ class Parser():
         i = 0
         while i < size:
             # Execute inside loop instructions
-            if(parsed_json.keys()[i] == 'loop'):
+            if(''.join([p for p in parsed_json.keys()[i] if not p.isdigit()]) == 'loop'):
                 for k in range(0, parsed_json.values()[i].get('loops')):
                     for j in range(i+1, i+1+parsed_json.values()[i].get('instructions')):
                         instruction.run(parsed_json.keys()[j], parsed_json.values()[j])
