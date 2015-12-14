@@ -1,5 +1,7 @@
 import RPi.GPIO as GPIO
 import time
+import ultrasound
+
 
 # Setup pins for spinning direction of the left and right motor (IN1 TO IN4)
 leftIN1_motor_pin = 27
@@ -75,8 +77,16 @@ def move(duration, power, orientation):
         GPIO.output(leftIN2_motor_pin, True)
         GPIO.output(rightIN1_motor_pin, False)
         GPIO.output(rightIN2_motor_pin, True)
-    # Sleep for 'duration' minutes
-	time.sleep(duration)
+
+    i = 0
+    while (i < duration*4):
+        time.sleep(0.25)
+        print "teste"
+        if ultrasound.distance() < 18:
+            cleanPWM()
+            time.sleep(4)
+            break    
+        i +=1
 
 def turn(orientation, power):
     # Make it turn
