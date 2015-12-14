@@ -38,67 +38,71 @@ motorPWM_right1.start(0)
 motorPWM_right2.start(0)
 
 def run(name, values):
+    name = ''.join([i for i in name if not i.isdigit()])
+
     if name == "stop":
         stop(values.get('duration'))
     elif name == "move":
         move(values.get('duration'), values.get('power'), values.get('orientation'))
     elif name == "turn":
-        turn(values.get('degree'), values.get('power'))
+        turn(values.get('orientation'), values.get('power'))
     elif name == "sensorDistance":
         print "sensorDistance"
+    elif name == "spin":
+        spin(values.get('power'))
     else:
-        print "Instruction not mapped"
+        print "Instruction not mapped" + name
 
 def move(duration, power, orientation):
-    print "move"
     # Change duty cycle
     motorPWM_left1.ChangeDutyCycle(power)
     motorPWM_left2.ChangeDutyCycle(power)
     motorPWM_right1.ChangeDutyCycle(power)
     motorPWM_right2.ChangeDutyCycle(power)
 
-    if orientation == 0:
+    if orientation == 1:
+        print "move forward"
         # Move forward
         GPIO.output(leftIN1_motor_pin, True)
         GPIO.output(leftIN2_motor_pin, False)
         GPIO.output(rightIN1_motor_pin, True)
         GPIO.output(rightIN2_motor_pin, False)
 
-    elif orientation == 1:
+    elif orientation == 0:
+        print "move backward"
         # Move backward
         GPIO.output(leftIN1_motor_pin, False)
         GPIO.output(leftIN2_motor_pin, True)
         GPIO.output(rightIN1_motor_pin, False)
         GPIO.output(rightIN2_motor_pin, True)
-        # Sleep for 'duration' minutes
-
     # Sleep for 'duration' minutes
-    time.sleep(duration)
+	time.sleep(duration)
 
-def turn(degree, power):
-    print "turn"
+def turn(orientation, power):
     # Make it turn
     motorPWM_left1.ChangeDutyCycle(power)
     motorPWM_left2.ChangeDutyCycle(power)
     motorPWM_right1.ChangeDutyCycle(power)
     motorPWM_right2.ChangeDutyCycle(power)
 
-    if degree == 0:
+    if orientation == 0:
+        print "turn left"
         # Turn left
         GPIO.output(leftIN1_motor_pin, True)
         GPIO.output(leftIN2_motor_pin, False)
         GPIO.output(rightIN1_motor_pin, False)
         GPIO.output(rightIN2_motor_pin, True)
 
-    elif degree == 1:
-        # Move backward
+    elif orientation == 1:
+        print "turn right"
+        # Turn Right
         GPIO.output(leftIN1_motor_pin, False)
         GPIO.output(leftIN2_motor_pin, True)
         GPIO.output(rightIN1_motor_pin, True)
         GPIO.output(rightIN2_motor_pin, False)
 
     # Sleep for 'duration' minutes
-    time.sleep(3)
+    time.sleep(1)
 
 def stop(duration):
     print "stop"
@@ -113,6 +117,20 @@ def stop(duration):
     GPIO.output(rightIN2_motor_pin, False)
     # Sleep for 'duration' seconds
     time.sleep(duration)
+
+def spin(power):
+    print "spin"
+    motorPWM_left1.ChangeDutyCycle(power)
+    motorPWM_left2.ChangeDutyCycle(power)
+    motorPWM_right1.ChangeDutyCycle(power)
+    motorPWM_right2.ChangeDutyCycle(power)
+    # Turn right
+    GPIO.output(leftIN1_motor_pin, False)
+    GPIO.output(leftIN2_motor_pin, True)
+    GPIO.output(rightIN1_motor_pin, True)
+    GPIO.output(rightIN2_motor_pin, False)
+    # Sleep for 'duration' seconds
+    time.sleep(1.5)
 
 def cleanGPIO():
     print "GPIO cleanup"

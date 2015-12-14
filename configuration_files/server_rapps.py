@@ -6,6 +6,7 @@ class AlfaTCPHandler(SocketServer.BaseRequestHandler):
   # Handle the AndroidApp request
   def handle(self):
     self.data = self.request.recv(1024).strip()
+    print "REQUEST RECEIVED"
     # Parse the Json file
     parser = Parser()
     parser.parseJson(self.data)
