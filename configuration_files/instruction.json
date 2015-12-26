@@ -1,26 +1,7 @@
 {
-  "moveForward": {
-    "duration": 1,
-    "power": 100
-  },
-
-  "moveBackward": {
-    "duration": 1,
-    "power": 50
-  },
-
-  "turnLeft": {
-    "degree": 180,
-    "power": 100
-  },
-
-  "turnRight": {
-    "degree": 0,
-    "power": 100
-  },
 
   "stop": {
-    "duration": 0
+      "duration": 0
   },
 
   "sensorDistance": {
@@ -28,8 +9,23 @@
   },
 
   "loop": {
-    "instruction1": "moveForward",
-    "instruction2": "moveBackward",
-    "instruction3": "turnLeft"
+    "instructions": 2,
+    "loops": 3
+  },
+
+  "turn5454": {
+    "orientation": 0,
+    "power": 100
+  },
+
+  "move": {
+    "duration": 3,
+    "power": 50,
+    "orientation": 1
+  },
+
+  "spin": {
+    "power": 50
   }
+
 }
